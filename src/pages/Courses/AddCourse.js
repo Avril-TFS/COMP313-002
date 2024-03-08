@@ -11,9 +11,9 @@ function AddCourse() {
     const [name, setName] = useState('');
     const [professor, setProfessor] = useState('');
     const [schedule, setSchedule] = useState({ day: '', startTime: '', endTime: '' });
-    //const [day,setDay] =useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [day,setDay] =useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [assignment, setAssignment] = useState('');
     const [startDate, setstartDate] = useState(new Date());
     const [endDate, setendDate] = useState(new Date());
@@ -77,24 +77,6 @@ function AddCourse() {
                         placeholder="Professor's Name"
                         value={professor}
                         onChange={(e) => setProfessor(e.target.value)}
-                        required
-                    />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Start Date</Form.Label>
-                    <Form.Control
-                        type="Date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        required
-                    />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>End Date</Form.Label>
-                    <Form.Control
-                        type="Date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
                         required
                     />
                 </Form.Group>
