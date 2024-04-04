@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../contexts/AuthContext";
+import Footer from '../../components/Footer';
+import "./grades.css"
+import {Card} from "react-bootstrap";
 
 const MyGrades = () => {
     const { getAuthToken, userDetails } = useAuth(); // Destructure userDetails from useAuth
@@ -49,16 +52,25 @@ const MyGrades = () => {
         <div>
             <h2>My Grades</h2>
             <p>Estimated Final Grade: {estimatedGrade}</p>
-            <ul>
+            <div className="assignments-container">
                 {grades.map((grade) => (
-                    <li key={grade._id}>
-                        <p>Assignment Name: {grade.name}</p>
-                        <p>Grade: {grade.grade}</p>
-                        <p>Weight: {grade.weight}</p>
-                        {/* Add more details if needed */}
-                    </li>
+                    <Card
+                        key={grade._id}
+                        className="assignment-card"
+                        style={{ flex: "0 0 calc(33% - 1em)", margin: "0.5em" }}
+                        bsPrefix
+                    >
+                        <Card.Header>{grade.name}</Card.Header>
+                        <Card.Body>
+                            <Card.Text>Grade: {grade.grade}</Card.Text>
+                            <Card.Text>Weight: {grade.weight}</Card.Text>
+                            
+                            
+                        </Card.Body>
+                    </Card>
                 ))}
-            </ul>
+            </div>
+            <Footer/>
         </div>
     );
 };

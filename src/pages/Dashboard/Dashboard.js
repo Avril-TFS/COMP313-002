@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "react-bootstrap/Card";
 import { useAuth, AuthProvider } from "../../contexts/AuthContext";
+import Footer from "../../components/Footer";
 
 import "./Dashboard.css";
 ///eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUxMWY2MzQyZmRjMzQzODZiNzk1MTAiLCJpYXQiOjE3MTAxMTYxOTAsImV4cCI6MTcxMDExOTc5MH0.Xhp8W-B-7VekpbVF0sFx0PL8lliy2-YyEChXGeATV9c
@@ -79,6 +80,7 @@ const Dashboard = () => {
     //   )}
     // </div>
 
+    
     <div className="dashboard-container mx-auto">
       <h3 className="display-5"> Dashboard for {userInfo.firstName} </h3>
 
@@ -89,19 +91,23 @@ const Dashboard = () => {
           <p>Assignments</p>
           <ul>
             {assignments.map((assignment) => (
-              <li key={assignment._id}>
-                <div>
-                  <h4>{assignment.name}</h4>
-                  <h4>
-                    Grade: {assignment.grade !== 0 ? assignment.grade : "TBD"}
-                  </h4>
-                  <p>Due Date: {formatDateToMDYY(assignment.dueDate)}</p>
-                </div>
-              </li>
+              <Card key={assignment._id} className="dashboard-card">
+              <Card.Body>
+                <Card.Title>{assignment.name}</Card.Title>
+                <Card.Text>
+                  Grade: {assignment.grade !== 0 ? assignment.grade : "TBD"}
+                </Card.Text>
+                <Card.Text>
+                  Due Date: {formatDateToMDYY(assignment.dueDate)}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+
             ))}
           </ul>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

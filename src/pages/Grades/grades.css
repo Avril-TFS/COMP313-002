@@ -1,7 +1,7 @@
 .grades-container {
     text-align: center;
     padding: 50px;
-    background-color: rgba(195, 224, 243, 0.274);
+    height: 100vh;
   }
   
   h2 {
@@ -29,7 +29,6 @@
   a:hover {
     text-decoration: underline;
   }
-  
  
   @media all and (min-width: 480px) {
     .entryform {
@@ -42,7 +41,14 @@
     }
   }
 
-
-
+.grades-card {
+  width: 30%;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff1e
+}
 
   

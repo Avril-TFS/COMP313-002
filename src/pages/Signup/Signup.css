@@ -8,5 +8,14 @@
 }
 
 .signup-button:hover {
-  background-color: #196869 !important; 
+  background-color: #19686973 !important; 
+}
+
+.container{
+  display: flex;
+  flex-direction: columnl;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  
 }

@@ -1,38 +1,15 @@
-.assignments-container {
+.dashboard-container {
   text-align: center;
   padding: 50px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-h2 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 20px 0;
-  border: 1px solid #ddd;
-  padding: 15px;
-}
-
-h3 {
-  font-size: 1.2em;
-}
-
-p {
-  margin: 10px 0;
-}
-
-.assignment-card {
+.dashboard-card {
   margin-bottom: 20px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  color: hsl(from color h s l);
+  background-color: #ffffff1e;
+  color: #299193
 }

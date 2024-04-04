@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { useAuth, AuthProvider } from "../../contexts/AuthContext";
+import Footer from "../../components/Footer";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -122,6 +123,7 @@ const Courses = () => {
           </Card>
         ))}
       </div>
+      <Footer/>
     </div>
   );
 };

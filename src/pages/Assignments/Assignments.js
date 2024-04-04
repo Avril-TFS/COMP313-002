@@ -18,6 +18,8 @@ import {
 } from "react-bootstrap";
 import ToastPopup from "../../components/ToastPopup";
 import ModalPopUp from "../../components/ModalPopup";
+import Footer from "../../components/Footer";
+
 
 export const calculateStudentLevel = (completedPercentage) => {
   if (completedPercentage >= 90) {
@@ -308,6 +310,7 @@ const Assignments = () => {
           </Col>
         </Row>
       </Container>
+      <Footer/>
     </>
   );
 };

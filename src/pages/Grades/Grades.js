@@ -1,10 +1,11 @@
-//src/pages/Grades/Grades.js
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './grades.css';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 const Grades = () => {
     const [grades, setGrades] = useState([]);
@@ -97,6 +98,7 @@ const Grades = () => {
                         </li>
                     ))}
             </ul>
+            <Footer/>
         </div>
     );
 };

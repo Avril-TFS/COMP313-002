@@ -1,6 +1,7 @@
 /* Login.css */
 .custom-header {
     background-color: rgba(17, 124, 132, 0.678) !important;
+    width: auto;
 }
 
 .login-button {

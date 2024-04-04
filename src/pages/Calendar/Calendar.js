@@ -12,6 +12,7 @@ import getDay from 'date-fns/getDay';
 import DatePicker from 'react-datepicker';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Footer from '../../components/Footer';
 
 //css files
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -132,6 +133,7 @@ const MyCalendar = ({ courses , assignments}) => {
           </Modal.Footer>
         </Modal>
       )}
+      <Footer/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Login.css';
+import Footer from '../../components/Footer';
 
 const Login = () => {
   const { signin } = useAuth();
@@ -28,9 +29,9 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mb-5">
       <div className="row justify-content-center">
-        <div className="col-md-6 col-lg-4">
+        <div className="col-xl-10 col-xl-10">
           <div className="card">
             <div className="card-header custom-header text-white text-center">
               <h2>Login</h2>
@@ -57,6 +58,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

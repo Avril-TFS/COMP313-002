@@ -1,9 +1,19 @@
 /* Calendar.css */
 /* Main container styling */
 .rbc-calendar {
-  background-color: #191a1c !important; /* grey */ 
+  background-color: #ffffff1e !important; /* grey */ 
   color: #ededed !important; /* white */
   max-width: 100%;
+  width: 800px;
+  margin: 0 auto;
+  height: 600px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 /* Toolbar styling */
@@ -62,7 +72,7 @@
 
 /* Today's date styling */
 .rbc-today {
-  background-color: #06191a; 
+  background-color: #191a1c; 
   color: #25868a; /* text */
 }
 
