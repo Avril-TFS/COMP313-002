@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth,AuthProvider } from '../../contexts/AuthContext';
 
 function EditGrade(props) {
     const { id } = useParams();
@@ -17,17 +17,30 @@ function EditGrade(props) {
     const apikey = process.env.REACT_APP_API_KEY;
     const apiUrl = `${apikey}/assignments/${id}`;
 
+    const { user, userDetails } = useAuth(AuthProvider);
+    const userInfo = JSON.parse(userDetails);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Assignment
                 const result = await axios.get(apiUrl);
-                const { name, dueDate, course, weight,grade } = result.data;
-                setAssignment({ name, dueDate: new Date(dueDate), course, weight,grade });
+                const { name, dueDate, course, weight,grade, priority, memo, completed } = result.data;
+                
+                setAssignment({ name, dueDate: new Date(dueDate), course, weight,grade , priority, memo, completed});
 
                 // Course
-                const coursesResponse = await axios.get(`${apikey}/assignments/courses`);
-                setCourses(coursesResponse.data);
+                // const coursesResponse = await axios.get(`${apikey}/student/courses`);
+                // setCourses(coursesResponse.data);
+                // console.log('course: ',course);
+
+                //course
+                const response = await axios.get(
+                `${apikey}/courses/student/${userInfo.id}`
+                );
+                setCourses(response.data);
+
+
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -36,14 +49,20 @@ function EditGrade(props) {
         fetchData();
     }, [apiUrl, id]);
 
+
+
     const handleSave = (e) => {
         e.preventDefault();
         const data = {
             name: assignment.name,
             weight: assignment.weight,
             dueDate: assignment.dueDate.toISOString(),
+            // courseId: course,
             course: assignment.course,
-            grade: assignment.grade
+            grade: assignment.grade,
+            priority: assignment.priority,
+            memo: assignment.memo,
+            completed: false
         };
         axios.patch(apiUrl, data)
             .then((result) => {
@@ -86,6 +105,7 @@ function EditGrade(props) {
                                 {course.name}
                             </option>
                         ))}
+                       
                     </Form.Control>
                 </Form.Group>
                 <Form.Group>
@@ -105,11 +125,43 @@ function EditGrade(props) {
                         type="number"
                         value={assignment.grade}
                         onChange={(e) => setAssignment({ ...assignment, grade: e.target.value })}
-                       
-                        min="0"
+                        
+                        max="100"
                       
                    />
                 </Form.Group>
+
+
+                <Form.Group>
+                    <Form.Label>Priority </Form.Label>
+                    <Form.Control
+                        type="number"
+                        value={assignment.priority}
+                        onChange={(e) => setAssignment({ ...assignment, priority: e.target.value })}
+                       
+                        min="0"
+                        max ="10"
+                      
+                   />
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Memo </Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={5}
+                        value={assignment.memo}
+                        onChange={(e) => setAssignment({ ...assignment, memo: e.target.value })}
+                       
+                      
+                   />
+                </Form.Group>
+
+                
+                
+
+
+
                 <Button variant="primary" type="submit">
                     Save
                 </Button>

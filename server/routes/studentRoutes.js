@@ -4,80 +4,38 @@
 // import Student from "../models/Student.js";
 
 const express = require("express");
-const ObjectId = require("mongodb").ObjectId;
-const Student = require("../models/Student.js");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const router = express.Router();
+const {
+  getAllStudents,
+  getStudentById,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+} = require("../controllers/studentcontroller");
 
 // Get all students
 router.get("/", async (req, res) => {
-  try {
-    await Student.find({})
-      .exec()
-      .then((data) => {
-        //console.log(data)
-        res.json(data);
-      });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  getAllStudents(req, res);
 });
 
 // Get a specific student
 router.get("/:id", async (req, res) => {
-  try {
-    const student = await Student.findById(req.params.id).exec();
-    res.json(student);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  getStudentById(req, res);
 });
 
 // Create a new student
 router.post("/", async (req, res) => {
-  try {
-    const student = new Student({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password, // Remember to hash the password before storing it
-      courses: [],
-    });
-    await Student.create(student);
-    res.json({ message: "Student created!", id: student._id });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+  createStudent(req, res);
 });
 
 // Update a student
 router.patch("/:id", async (req, res) => {
-  try {
-    const updatedStudent = await Student.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    ).exec();
-    res.json(updatedStudent);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  updateStudent(req, res);
 });
 
 // Delete a student by ID
 router.delete("/:id", async (req, res) => {
-  try {
-    const deletedStudent = await Student.findByIdAndDelete(
-      req.params.id
-    ).exec();
-    if (!deletedStudent) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-    res.json({ message: "Student deleted", id: deletedStudent._id });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  deleteStudent(req, res);
 });
 
 module.exports = router;

@@ -30,7 +30,7 @@ const authenticateToken = (req, res, next) => {
           "Token has expired. Redirecting to login page: " + client + "/logout"
         );
 
-        return res.redirect(client + "/logout");
+        return res.redirect(client + "/home");
       }
 
       console.error("Invalid token:", err.message);

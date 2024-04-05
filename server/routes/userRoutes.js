@@ -67,7 +67,12 @@ router.post("/signup", async (req, res) => {
       message: "Student signed up successfully",
       token,
       expiresIn: 3600,
-      studentId: savedStudent._id,
+      user: {
+        id: savedStudent._id,
+        firstName: savedStudent.firstName,
+        lastName: savedStudent.lastName,
+        email: savedStudent.email,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -116,7 +121,15 @@ router.post("/login", async (req, res) => {
     });
 
     // Send the token in the response
-    res.json({ token }); // expiresIn is in seconds (1 hour in this example)
+    res.json({
+      token,
+      user: {
+        id: student._id,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        email: student.email,
+      },
+    }); // expiresIn is in seconds (1 hour in this example)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

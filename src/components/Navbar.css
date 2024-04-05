@@ -3,8 +3,19 @@
   height: auto;
   margin-left: 10px;
   margin-right: 10px;
+  color: #299193;
 }
+
+.nav-link {
+  color: #299193;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
 .navbar {
+  color: #299193;
   padding: 10px 0;
   position: fixed;
   width: 100%;
@@ -14,10 +25,10 @@
   right: 0;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
-nav-link {
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #299193;
-  font-size: 1.2em;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0 10px;
 }

@@ -3,8 +3,11 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+
 
 const Home = () => {
+  const { user } = useAuth();
   return (
     <Container>
       <div>
@@ -22,8 +25,10 @@ const Home = () => {
           <li>Get estimates for final grades.</li>
           <li>Set reminders for assignment due dates.</li>
         </ul>
-
+       
         <Row className="home-buttons-container justify-content-center">
+        {!user && (
+            <>
           <Col xs={12} md={6} className="text-md-center mb-1">
             <Button variant="dark" className="home-button">
               <Link to="/authentication/signup" className="nav-link">
@@ -38,6 +43,8 @@ const Home = () => {
               </Link>
             </Button>
           </Col>
+          </>
+          )}
         </Row>
       </div>
     </Container>

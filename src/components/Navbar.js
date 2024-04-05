@@ -1,15 +1,50 @@
 // src/components/Navbar.js
 
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Navbar as BootstrapNavbar, Nav, Container } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
-
+import { useAuth, AuthProvider } from "../contexts/AuthContext";
+import ProfileDisplay from "./ProfilePopUp/ProfileDisplay";
 import "./Navbar.css";
 import logoImage from "../images/back.jpg";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, userDetails } = useAuth(AuthProvider);
+  const [showModal, setShowModal] = useState(false);
+
+  let userInfo;
+  if (userDetails) {
+    try {
+      userInfo = JSON.parse(userDetails);
+      //console.log("User details:", userInfo);
+    } catch (error) {
+      console.error("Error parsing userDetails:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (userDetails) {
+      try {
+        userInfo = JSON.parse(userDetails);
+        //console.log("User details:", userInfo);
+      } catch (error) {
+        console.error("Error parsing userDetails:", error);
+      }
+    }
+  }, [userDetails]);
+
+  const handleOpenModal = (userInfo) => {
+    if (userInfo) {
+      console.log("User info:", userInfo);
+      ProfileDisplay(userInfo);
+      setShowModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <BootstrapNavbar
@@ -29,10 +64,15 @@ const Navbar = () => {
         <BootstrapNavbar.Toggle aria-controls="navbarNav" />
 
         <BootstrapNavbar.Collapse id="navbarNav">
-          <Nav className="ml-auto w-100">
+          <Nav className="ml-auto w-100" bsPrefix>
             {user ? (
               <>
-                <Nav.Link as={Link} to="/dashboard" className="nav-link">
+                <Nav.Link
+                  as={Link}
+                  to="/dashboard"
+                  className="nav-link"
+                  bsPrefix
+                >
                   Dashboard
                 </Nav.Link>
                 <Nav.Link as={Link} to="/courses" className="nav-link">
@@ -41,9 +81,16 @@ const Navbar = () => {
                 <Nav.Link as={Link} to="/assignments" className="nav-link">
                   Assignments
                 </Nav.Link>
+                <Nav.Link as={Link} to="/completed-assignments" className="nav-link">
+                  Completed Assignments {/* Added Completed Assignments link */}
+                </Nav.Link>
                 <Nav.Link as={Link} to="/calendar" className="nav-link">
                   Calendar
                 </Nav.Link>
+                <Nav.Link as={Link} to="/mygrades" className="nav-link">
+                  My Grades
+                </Nav.Link>
+
                 <Nav.Link as={Link} to="/logout" className="nav-link">
                   Logout
                 </Nav.Link>
@@ -68,6 +115,22 @@ const Navbar = () => {
             )}
           </Nav>
         </BootstrapNavbar.Collapse>
+        <BootstrapNavbar.Text className="text-white">
+          {userInfo && userInfo.firstName
+            ? `Welcome, ${userInfo.firstName}`
+            : " "}
+        </BootstrapNavbar.Text>
+        {user ? (
+          <>
+            <ProfileDisplay
+              show={showModal}
+              handleClose={handleCloseModal}
+              user={userInfo}
+            />
+          </>
+        ) : (
+          console.log("No user")
+        )}
       </Container>
     </BootstrapNavbar>
   );

@@ -5,25 +5,29 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth, AuthProvider } from "../../contexts/AuthContext";
 
 function AddAssignment() {
   const [name, setName] = useState("");
   const [dueDate, setDueDate] = useState(new Date());
   const [course, setCourse] = useState("");
   const [weight, setWeight] = useState("");
-  const [student, setStudent] = useState("");
   const [grade, setGrade] = useState("");
   const [courses, setCourses] = useState([]);
-  //const [students, setStudents] = useState([]);
-  const [studentName, setStudentName] = useState('');
-  const [studentId,setStudentId] = useState('');
+ //not sure if we should include completed field here
+//  const [completed,setCompleted] = useState(false);
+  const [memo, setMemo] = useState("");
+  const [priority, setPriority] = useState(0);
+
   const navigate = useNavigate();
   const { getAuthToken } = useAuth();
+  const { user, userDetails } = useAuth(AuthProvider);
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${getAuthToken()}`;
   const apiKey = process.env.REACT_APP_API_KEY;
   const token = getAuthToken();
+
+  const userInfo = JSON.parse(userDetails);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,37 +39,34 @@ function AddAssignment() {
         dueDate: dueDate.toISOString(),
         courseId: course,
         weight: weight,
-        studentId: studentId,
+        studentId: userInfo.id,
+        grade: grade,
+        //completed:completed,
+        memo:memo,
+        priority:priority
       };
 
+      // //Get student's data
+      // const studentResponse = await axios.get(
+      //   `${apiKey}/students/${studentId}`
+      // );
+      // console.log("student 98: ", { student });
+      // const studentData = studentResponse.data;
+      // //Update student's courses array with the new course
+      // const updatedStudentData = {
+      //   ...studentData,
+      //   courses: [...studentData.courses, course],
+      // };
 
-      //Get student's data
-      const studentResponse = await axios.get(`${apiKey}/students/${studentId}`);
-      console.log("student 98: ", { student });
-      const studentData = studentResponse.data;
-      //Update student's courses array with the new course
-      const updatedStudentData = {
-        ...studentData,
-        courses: [...studentData.courses, course],
-      };
-      
-      console.log('student',student);
-
+      console.log("student", userInfo);
 
       // Send POST request to add the course to student's courses
       await axios
-        .post(`${apiKey}/courses/${studentId}/add-course`, {
+        .post(`${apiKey}/courses/${userInfo.id}/add-course`, {
           courseId: course,
         })
         .catch((error) => {
           console.error("Error adding course to student:", error.message);
-        });
-
-      // Update  student's data
-      await axios
-        .patch(`${apiKey}/students/${studentId}`, updatedStudentData)
-        .catch((error) => {
-          console.error("Error updating student:", error.message);
         });
 
       //Send POST request to add new assignment
@@ -84,8 +85,6 @@ function AddAssignment() {
         alert(errorMessage);
       }
 
-
-
       navigate("/assignments");
     } catch (error) {
       console.error("Error:", error.message);
@@ -96,47 +95,33 @@ function AddAssignment() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`${apiKey}/courses`);
+        const response = await axios.get(
+          `${apiKey}/courses/student/${userInfo.id}`
+        );
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching courses:", error);
       }
     };
-
-    // const fetchStudents = async () => {
-    //   try {
-    //     const response = await axios.get(`${apiKey}/students`);
-    //     setStudents(response.data);
-    //   } catch (error) {
-    //     console.error("Error fetching students:", error);
-    //   }
-    // };
-    
-    const fetchUserName = async () =>{
-      try{
-        const apiKey = process.env.REACT_APP_API_KEY;
-        const response = await axios.get(`${apiKey}/userinfo`);
-        const fetchedUserId = response.data.user.userId;
-        //console.log('fetchedUserId',fetchedUserId)
-        setStudentId(fetchedUserId);
-        //console.log('fetchedUserId type:', typeof({studentId}));
-        const studentResponse = await axios.get(`${apiKey}/students/${fetchedUserId}`);
-        const studentFirstName = studentResponse.data.firstName;
-        setStudentName(studentFirstName);
-        //console.log('studentName',studentFirstName);
-      }catch(error){
-        console.error("Error:", error);
-      }
-    }
     fetchCourses();
-    //fetchStudents();
-    fetchUserName();
   }, []);
+
+  const handlePriorityChange = (e) => {
+    // Ensure input is within the range of 0 to 10
+    const newValue = Math.max(0, Math.min(10, e.target.value));
+    setPriority(newValue);
+  };
+
+  const handleGradeChange = (e) => {
+    // Ensure input is within the range of 0 to 100
+    const newValue = Math.max(0, Math.min(100, e.target.value));
+    setGrade(newValue);
+  };
 
   return (
     <div className="assignments-container">
       <h2>Add Assignment </h2>
-      <p>User:  {studentName}</p>
+      <p>User: {userInfo.firstName}</p>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Assignment Name</Form.Label>
@@ -185,12 +170,8 @@ function AddAssignment() {
         </Form.Group>
         <Form.Group>
           <Form.Label>Student</Form.Label>
-          <Form.Control
-            value={studentName}
-            onChange={(e) => setStudent(e.target.value)}
-            required
-          >
-           {/* <option value="">Select Student</option>
+          <Form.Control value={userInfo.firstName} required>
+            {/* <option value="">Select Student</option>
             {students.map((student) => (
               <option key={student._id} value={student._id}>
                 {student.firstName}
@@ -203,9 +184,37 @@ function AddAssignment() {
           <Form.Control
             type="number"
             value={grade}
-            onChange={(e) => setGrade(e.target.value)}
+            onChange={handleGradeChange}
+            min="0"
+            max="100"
           />
         </Form.Group>
+
+        <Form.Group>
+          <Form.Label>Priority</Form.Label>
+          <Form.Control
+            type="number"
+            value={priority}
+            // onChange={(e) => setPriority(e.target.value)}
+            onChange={handlePriorityChange}
+          min="0"
+          max="10"
+          />
+        </Form.Group>
+
+
+        <Form.Group>
+          <Form.Label>Memo</Form.Label>
+          <Form.Control
+           as="textarea"
+           placeholder="Memo Space"
+           rows={5}
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+          />
+        </Form.Group>
+
+
         <Button variant="primary" type="submit">
           Save
         </Button>

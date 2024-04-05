@@ -17,6 +17,7 @@ const courseSchema = new mongoose.Schema({
   startDate: { type: Date },
   endDate: { type: Date },
   assignments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Assignment" }],
+  memo: { type: String, default: "" }
 });
 const Course = mongoose.model("Course", courseSchema);
 

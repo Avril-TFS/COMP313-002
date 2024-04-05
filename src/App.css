@@ -3,6 +3,7 @@
 }
 
 body {
+  color: #299193;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -43,4 +44,31 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+.nav-link {
+  color: #299193;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.navbar {
+  color: #299193;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #299193;
 }
