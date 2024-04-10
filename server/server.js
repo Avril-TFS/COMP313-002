@@ -1,9 +1,11 @@
 // // server.js
 
 const express = require("express");
+const createError = require("http-errors");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
@@ -15,19 +17,19 @@ const courseRoutes = require("./routes/courseRoutes");
 const assignmentRoutes = require("./routes/assignmentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
+const calendarRoute = require("./routes/calendarRoute");
 const Assignment = require("./models/Assignment");
 const completedassignments = require("./routes/completedAssignmentRoutes");
-const {
-  estimateFinalGrades,
-} = require("./controllers/completedassignmentscontroller");
-const emailRoutes = require("./routes/appMailRoutes");
-const gradeRoutes = require("./routes/gradeRoutes");
+const { estimateFinalGrades } = require("./controllers/completedassignmentscontroller");
+require("dotenv").config();
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(morgan("dev"));
 // Middleware
 app.use(bodyParser.json());
 app.use(cookieparser());
@@ -42,8 +44,7 @@ app.use("/completed-assignments", authenticateToken, completedassignments);
 app.use("/grades", authenticateToken, gradeRoutes);
 app.use("/admin", adminRoutes);
 app.use("/users", userRoutes);
-//email
-app.use("/email", emailRoutes);
+app.use("/calendarRoute", calendarRoute);
 
 // Error handling middleware
 app.use((err, _req, res, _next) => {
