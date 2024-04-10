@@ -3,52 +3,32 @@ import { Modal, Button, Form,ProgressBar } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { calculateStudentLevel } from "../../pages/Assignments/Assignments";
+import AssignmentProgressbar from "../../components/AssignmentProgressbar";
+
+//avatar
+import AvatarSelection from "../../components/AvatarSelection"
+import { avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8, avatar9 } from "../../components/AvatarSelection";
+
 
 const ProfileDisplay = ({ user }) => {
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({ ...user });
-  
   const [totalAssignments, setTotalAssignments] = useState(0);
-  const [completedAssignments, setCompletedAssignments] = useState(0);
-
   const { getAuthToken, setUserInfo } = useAuth();
+  
   axios.defaults.headers.common["Authorization"] = `Bearer ${getAuthToken()}`;
   const handleClose = () => {
     setShowModal(false);
     setEditMode(false); // Reset edit mode when closing the modal
   };
+
+
   const handleShow = () => setShowModal(true);
 
   const handleInputChange = (event) => {
     setUpdatedUser({ ...updatedUser, [event.target.name]: event.target.value });
   };
-
-  const fetchAssignments = async () => {
-    try {
-      const apiKey = process.env.REACT_APP_API_KEY;
-      const response = await axios.get(
-        `${apiKey}/assignments/student/${user.id}`
-      );
-
-      const fetchedAssignments = response.data;
-      const total = fetchedAssignments.length;
-      const completed = fetchedAssignments.filter(
-        (assignment) => assignment.completed
-      ).length;
-
-      setTotalAssignments(total);
-      setCompletedAssignments(completed);
-    } catch (error) {
-      console.error("Error fetching assignments:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchAssignments();
-  }, [user.id]); // Fetch assignments when user id changes
-
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -78,9 +58,26 @@ const ProfileDisplay = ({ user }) => {
     setEditMode(false); // Switch back to view mode after submitting the form
   };
 
-  const completedPercentage = Math.round(
-     completedAssignments/ totalAssignments*100
-  );
+   const fetchAssignments = async () => {
+    try {
+      const apiKey = process.env.REACT_APP_API_KEY;
+      const response = await axios.get(
+        `${apiKey}/assignments/student/${user.id}`
+      );
+
+      const fetchedAssignments = response.data;
+  
+      setTotalAssignments(fetchedAssignments);
+   
+    } catch (error) {
+      console.error("Error fetching assignments:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, [user.id]); // Fetch assignments when user id changes
+
 
   return (
     <>
@@ -97,7 +94,15 @@ const ProfileDisplay = ({ user }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+
+       
+          
           {editMode ? (
+           <div>
+
+<AvatarSelection editMode={editMode} />
+
+
             <Form onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Label>Name</Form.Label>
@@ -122,8 +127,11 @@ const ProfileDisplay = ({ user }) => {
                 Update
               </Button>
             </Form>
+            </div>
           ) : (
             <>
+           <AvatarSelection editMode={editMode} />
+
               <p>
                 Name:{" "}
                 {updatedUser && updatedUser.firstName
@@ -136,16 +144,21 @@ const ProfileDisplay = ({ user }) => {
               </p>
               {/* Add more profile information as needed */}
               
-            <p>Completed Assignment: {completedAssignments} / {totalAssignments}</p>
+            {/* <p>Completed Assignment: {completedAssignments} / {totalAssignments}</p> */}
         
-            <ProgressBar
+            {/* <ProgressBar
                   now={completedPercentage}
                   label={`${completedPercentage}%`}
                 />
                 <p>
                   Your Student Level:{" "}
                   {calculateStudentLevel(completedPercentage)}
-                </p>
+                </p> */}
+
+              <AssignmentProgressbar
+               assignments ={totalAssignments}
+               />
+
               
               <Button variant="primary" onClick={() => setEditMode(true)}>
                 Edit

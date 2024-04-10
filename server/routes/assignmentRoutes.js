@@ -90,10 +90,13 @@ router.post("/", async (req, res) => {
     grade: req.body.grade,
     weight: req.body.weight,
     student: req.body.student,
-    completed: req.body.completed,  //new field
-    memo:req.body.memo,             //new field
-    priority:req.body.priority      //new field
+    completed: req.body.completed, //new field
+    memo: req.body.memo, //new field
+    priority: req.body.priority, //new field
   });
+  if (assignment.grade !== 0) {
+    assignment.completed = true;
+  }
 
   try {
     const newAssignment = await assignment.save();
@@ -106,7 +109,7 @@ router.post("/", async (req, res) => {
 // Route to update an assignment
 router.patch("/:assignmentId", async (req, res) => {
   const { assignmentId } = req.params;
-  const { weight, grade, dueDate, name ,priority,completed,memo} = req.body;
+  const { weight, grade, dueDate, name, priority, completed, memo } = req.body;
 
   try {
     // Check if the assignment exists
@@ -132,16 +135,16 @@ router.patch("/:assignmentId", async (req, res) => {
       assignment.name = name;
     }
 
-    if(completed!== undefined){
-      assignment.completed = completed
+    if (completed !== undefined) {
+      assignment.completed = completed;
     }
 
-    if(memo!== undefined){
-      assignment.memo = memo
+    if (memo !== undefined) {
+      assignment.memo = memo;
     }
 
-    if(priority!== undefined){
-      assignment.priority = priority
+    if (priority !== undefined) {
+      assignment.priority = priority;
     }
 
     // Save the updated assignment to the database
@@ -186,7 +189,17 @@ router.delete("/:assignmentId", async (req, res) => {
 
 // Route to add an assignment
 router.post("/add-assignment", async (req, res) => {
-  const { name, dueDate, courseId, weight, studentId, grade , completed, memo,priority} = req.body;
+  const {
+    name,
+    dueDate,
+    courseId,
+    weight,
+    studentId,
+    grade,
+    completed,
+    memo,
+    priority,
+  } = req.body;
 
   try {
     // Check if the course exists
@@ -219,8 +232,11 @@ router.post("/add-assignment", async (req, res) => {
       grade: grade || 0,
       completed: completed || false,
       memo: memo || "",
-      priority: priority || 0
+      priority: priority || 0,
     });
+    if (assignment.grade !== 0) {
+      assignment.completed = true;
+    }
     course.assignments.push(assignment);
     student.assignments.push(assignment);
 
@@ -265,7 +281,7 @@ router.post("/:assignmentId/add-grade", async (req, res) => {
 
     // Update or add the grade for the student in the assignment
     assignment.grade = score;
-
+    assignment.completed = true;
     // Save the updated assignment to the database
     await assignment.save();
 

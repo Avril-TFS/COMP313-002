@@ -22,6 +22,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Logout from "./components/Logout";
 import CompletedAssignments from "./pages/Assignments/CompletedAssignments";
 import "./styles.css";
+import Footer from "./components/Footer";
 
 function App() {
   const { user } = useAuth();
@@ -58,8 +59,10 @@ function App() {
               <Route path="/viewcourse/:id" element={<ViewCourse />} />
               <Route path="/addcourse" element={<AddCourse />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/completed-assignments" element={<CompletedAssignments />} />
- 
+              <Route
+                path="/completed-assignments"
+                element={<CompletedAssignments />}
+              />
             </>
           ) : (
             <Route path="authentication/*" element={<AuthenticationPage />} />
@@ -80,11 +83,15 @@ function App() {
               <Route path="/viewcourse/:id" element={<ViewCourse />} />
               <Route path="/addcourse" element={<AddCourse />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/completed-assignments" element={<CompletedAssignments />} />
+              <Route
+                path="/completed-assignments"
+                element={<CompletedAssignments />}
+              />
             </>
           )}
         </Routes>
       </Container>
+      <Footer />
     </>
   );
 }

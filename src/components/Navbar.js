@@ -81,9 +81,7 @@ const Navbar = () => {
                 <Nav.Link as={Link} to="/assignments" className="nav-link">
                   Assignments
                 </Nav.Link>
-                <Nav.Link as={Link} to="/completed-assignments" className="nav-link">
-                  Completed Assignments {/* Added Completed Assignments link */}
-                </Nav.Link>
+
                 <Nav.Link as={Link} to="/calendar" className="nav-link">
                   Calendar
                 </Nav.Link>

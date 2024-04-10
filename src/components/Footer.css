@@ -1,0 +1,21 @@
+.footer-container {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #212529;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+.footer-social-media {
+  display: flex;
+  justify-content: center;
+}
+.footer-social-media a {
+  margin: 0 5px;
+}
+.footer-email {
+  margin-left: auto;
+}

@@ -6,9 +6,13 @@
 
 h2 {
   font-size: 1.5em;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
+h4 {
+padding:0.5em;
+
+}
 ul {
   list-style-type: none;
   padding: 0;
@@ -36,3 +40,36 @@ p {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   color: hsl(from color h s l);
 }
+
+/*CSS grid*/
+#cssportal-grid {
+	display: grid;
+	grid-template-rows:auto 1fr;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	width: 100%;
+	height: 100%;
+}
+#div1 {
+	grid-area: 1 / 1 / 2 / 3;
+	/* background-color: rgba(21, 213, 238, 0.5);  */
+  
+}
+#div2 {
+	grid-area: 2/1/3/2;
+	/* background-color: rgba(23, 70, 240, 0.5);  */
+  padding: 5%;
+}
+#div3 {
+	grid-area: 2/2/3/3;
+	/* background-color: rgba(206, 3, 224, 0.5);  */
+  padding: 5%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center buttons vertically */
+  padding-bottom: 15px;
+}
+

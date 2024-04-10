@@ -108,7 +108,7 @@ const MyCalendar = ({ courses , assignments}) => {
   return (
     <div style={{height: "600px"}}>
     <BigCalendar 
-      defaultView='week' 
+      defaultView='month' 
       localizer={localizer} 
       events={events} 
       startAccessor={(event) => new Date(event.start)} 
